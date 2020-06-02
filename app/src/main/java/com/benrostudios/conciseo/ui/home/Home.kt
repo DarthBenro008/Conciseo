@@ -45,13 +45,12 @@ class Home : ScopedFragment() ,KodeinAware{
         shortenUrlResponse()
     }
 
-    fun shortenUrl() = launch {
+    private fun shortenUrl() = launch {
         viewModel.shortenUrl("www.google.com")
     }
 
-    fun shortenUrlResponse() = launch {
+    private fun shortenUrlResponse() = launch {
         viewModel._shortenResponse.observe(viewLifecycleOwner, Observer {
-            //shortToaster(it.toString())
             Log.d("URL Made", "$it")
         })
     }
