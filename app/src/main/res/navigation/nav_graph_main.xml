@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/home">
+    <fragment
+        android:id="@+id/home"
+        android:name="com.benrostudios.conciseo.ui.home.Home"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/history"
+        android:name="com.benrostudios.conciseo.ui.history.History"
+        android:label="history_fragment"
+        tools:layout="@layout/history_fragment" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.benrostudios.conciseo.ui.settings.Settings"
+        android:label="settings_fragment"
+        tools:layout="@layout/settings_fragment" />
+</navigation>
