@@ -82,6 +82,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:visibility="invisible"
+                android:indeterminate="true"
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/url_input_holder"
+                app:layout_constraintStart_toStartOf="@+id/url_input_holder"
+                app:layout_constraintTop_toBottomOf="@+id/url_input_holder" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
@@ -110,6 +121,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.cardview.widget.CardView
+        android:visibility="gone"
         android:id="@+id/result_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -194,6 +206,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="TextView"
+                android:textColor="@color/colorRisingText"
+                android:textStyle="italic"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
                 app:layout_constraintTop_toTopOf="@+id/textView5" />
 
@@ -203,6 +217,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="TextView"
+                android:textColor="@color/colorRisingText"
+                android:textStyle="italic"
                 app:layout_constraintStart_toEndOf="@+id/textView6"
                 app:layout_constraintTop_toTopOf="@+id/textView6" />
         </androidx.constraintlayout.widget.ConstraintLayout>

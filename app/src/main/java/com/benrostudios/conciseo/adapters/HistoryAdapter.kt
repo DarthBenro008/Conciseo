@@ -29,7 +29,7 @@ class HistoryAdapter(
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.linkTitle.text = historyItems[position].originalLink
-        holder.time.text = "${historyItems[position].time}"
+        holder.time.text = historyItems[position].fullShortLink
         holder.container.setOnClickListener {
             mContext.shortToaster("${historyItems[position].shortLink}")
         }

@@ -17,7 +17,16 @@
 
     //History Fragment
     <string name="history_title_greeting">Past Conceise\'s</string>
+    <string name="empty_history">Nothing Found here!</string>
 
     //About Fragment
     <string name="about_title_greeting">About Me!</string>
+    <string name="name">Hemanth Krishna</string>
+    <string name="occupation">CSE Undergrad</string>
+    <string name="contribute">Click here to contribute to the project!</string>
+
+    //Misc
+    <string name="github_url">https://github.com/DarthBenro008</string>
+    <string name="project_url">https://github.com/DarthBenro008/Conciseo</string>
+    <string name="email_id">hkpdev008@outlook.com</string>
 </resources>

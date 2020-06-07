@@ -2,6 +2,7 @@ package com.benrostudios.conciseo.util
 
 import android.content.Context
 import android.util.Patterns
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 
@@ -16,4 +17,11 @@ fun Context.shortToaster(message: String){
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
+fun View.hide(){
+    this.visibility = View.GONE
+}
+
+fun View.appear(){
+    this.visibility = View.VISIBLE
+}
 fun CharSequence?.isValidURL() = !isNullOrEmpty() && Patterns.WEB_URL.matcher(this ?: "").matches()

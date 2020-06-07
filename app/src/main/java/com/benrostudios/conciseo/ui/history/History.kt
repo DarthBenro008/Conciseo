@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.benrostudios.conciseo.R
 import com.benrostudios.conciseo.adapters.HistoryAdapter
 import com.benrostudios.conciseo.ui.base.ScopedFragment
+import com.benrostudios.conciseo.util.appear
+import com.benrostudios.conciseo.util.hide
 import com.benrostudios.conciseo.util.shortToaster
 import kotlinx.android.synthetic.main.history_fragment.*
+import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -51,10 +54,15 @@ class History : ScopedFragment(), KodeinAware {
         viewModel.fetchHistory()
         viewModel.fetchedHistory.observe(viewLifecycleOwner, Observer {
             if(it.isNotEmpty()){
+                history_recycler.appear()
+                history_placeholder.hide()
+                history_placeholder_text.hide()
                 adapter = HistoryAdapter(it)
                 history_recycler.adapter = adapter
             }else{
-                shortToaster("Empty hai bhai")
+                history_recycler.hide()
+                history_placeholder.appear()
+                history_placeholder_text.appear()
             }
         })
     }
