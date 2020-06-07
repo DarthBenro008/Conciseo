@@ -16,7 +16,7 @@
         tools:layout="@layout/history_fragment" />
     <fragment
         android:id="@+id/settings"
-        android:name="com.benrostudios.conciseo.ui.settings.Settings"
+        android:name="com.benrostudios.conciseo.ui.about.About"
         android:label="settings_fragment"
-        tools:layout="@layout/settings_fragment" />
+        tools:layout="@layout/about_fragment" />
 </navigation>

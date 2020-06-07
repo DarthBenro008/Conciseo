@@ -3,5 +3,21 @@
     //Bottom Navigation
     <string name="home_title">Home</string>
     <string name="history_title">History</string>
-    <string name="settings_title">Settings</string>
+    <string name="about_title">About</string>
+
+    //Home Fragment
+    <string name="greeting">Welcome!</string>
+    <string name="statement">Let\'s Shrink long URLs!</string>
+    <string name="url">URL</string>
+    <string name="consciseo">Conciseo!</string>
+    <string name="do_something">Enter a Valid URL to witness the magic!</string>
+    <string name="shrink_title">Conciseo Details</string>
+    <string name="link_title">Shortened Link : </string>
+    <string name="alternative_link_title">Alternative Link Title : </string>
+
+    //History Fragment
+    <string name="history_title_greeting">Past Conceise\'s</string>
+
+    //About Fragment
+    <string name="about_title_greeting">About Me!</string>
 </resources>

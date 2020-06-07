@@ -5,7 +5,9 @@ import com.benrostudios.conciseo.data.db.HistoryDatabase
 import com.benrostudios.conciseo.data.network.ApiService
 import com.benrostudios.conciseo.data.repository.ShortenRepository
 import com.benrostudios.conciseo.data.repository.ShortenRepositoryImpl
+import com.benrostudios.conciseo.ui.history.HistoryViewModelFactory
 import com.benrostudios.conciseo.ui.home.HomeViewModelFactory
+import com.benrostudios.conciseo.ui.about.AboutViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -24,6 +26,8 @@ class ConciseoApplication: Application(), KodeinAware {
         bind() from singleton { ApiService() }
         bind<ShortenRepository>() with singleton { ShortenRepositoryImpl(instance(),instance()) }
         bind() from provider { HomeViewModelFactory(instance()) }
+        bind() from provider { HistoryViewModelFactory(instance()) }
+        bind() from provider { AboutViewModelFactory(instance()) }
 
     }
 }

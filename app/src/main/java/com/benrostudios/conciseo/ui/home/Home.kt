@@ -11,8 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 import com.benrostudios.conciseo.R
+import com.benrostudios.conciseo.data.models.ShortnerResult
+import com.benrostudios.conciseo.ui.base.HeavyScopedFragment
 import com.benrostudios.conciseo.ui.base.ScopedFragment
+import com.benrostudios.conciseo.util.isValidURL
 import com.benrostudios.conciseo.util.shortToaster
+import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -41,18 +45,32 @@ class Home : ScopedFragment() ,KodeinAware{
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this,viewModelFactory).get(HomeViewModel::class.java)
-        shortenUrl()
-        shortenUrlResponse()
+        trigger.setOnClickListener {
+            if(url_input.text.isValidURL()){
+                shortenUrl(url_input.text.toString())
+                shortenUrlResponse()
+            }else{
+                shortToaster("Enter a Valid URL")
+            }
+        }
+
     }
 
-    private fun shortenUrl() = launch {
-        viewModel.shortenUrl("www.google.com")
+    private fun shortenUrl(url: String) = launch {
+        viewModel.shortenUrl(url)
     }
 
     private fun shortenUrlResponse() = launch {
         viewModel._shortenResponse.observe(viewLifecycleOwner, Observer {
             Log.d("URL Made", "$it")
+            shortToaster("$it")
+            it.result.time = 123
+            upsertItem(it.result)
         })
+    }
+
+    private fun upsertItem(item: ShortnerResult) = launch {
+        viewModel.upsertItem(item)
     }
 
 }

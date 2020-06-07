@@ -10,7 +10,7 @@
         android:title="@string/history_title" />
     <item
         android:id="@+id/settings"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:title="@string/settings_title" />
+        android:icon="@drawable/ic_baseline_info_24"
+        android:title="@string/about_title" />
 
 </menu>

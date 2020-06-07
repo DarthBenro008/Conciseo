@@ -26,7 +26,7 @@ data class ShortnerResult(
     @SerializedName("short_link2")
     val shortLink2: String,
     @SerializedName("time")
-    val time: Long? = null
+    var time: Long? = null
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
