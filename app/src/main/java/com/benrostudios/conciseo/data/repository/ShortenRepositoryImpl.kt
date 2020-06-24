@@ -16,6 +16,9 @@ class ShortenRepositoryImpl(
 
     private val _shortnerResponse = MutableLiveData<ShortnerResponse>()
 
+    override val networkError: LiveData<String>
+        get() = _networkErrorResolution
+
     override val shortenResponse: LiveData<ShortnerResponse>
         get() = _shortnerResponse
 

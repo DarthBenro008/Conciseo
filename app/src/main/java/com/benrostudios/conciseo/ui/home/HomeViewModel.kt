@@ -13,11 +13,16 @@ class HomeViewModel(
     private val shortenRepository: ShortenRepository
 ) : ViewModel() {
     val _shortenResponse = MutableLiveData<ShortnerResponse>()
+    val networkError = MutableLiveData<String>()
+
 
     init {
         shortenRepository.shortenResponse.observeForever {
             _shortenResponse.postValue(it)
         }
+         shortenRepository.networkError.observeForever {
+             networkError.postValue(it)
+         }
     }
 
     suspend fun shortenUrl(url: String){

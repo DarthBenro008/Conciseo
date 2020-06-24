@@ -1,6 +1,7 @@
 package com.benrostudios.conciseo.ui.home
 
 import android.R.attr.label
+import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -16,10 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.benrostudios.conciseo.R
 import com.benrostudios.conciseo.data.models.ShortnerResult
 import com.benrostudios.conciseo.ui.base.ScopedFragment
-import com.benrostudios.conciseo.util.appear
-import com.benrostudios.conciseo.util.hide
-import com.benrostudios.conciseo.util.isValidURL
-import com.benrostudios.conciseo.util.shortToaster
+import com.benrostudios.conciseo.util.*
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -29,7 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class Home : ScopedFragment() ,KodeinAware{
+class Home : ScopedFragment(), KodeinAware {
 
     override val kodein by closestKodein()
     private val viewModelFactory: HomeViewModelFactory by instance()
@@ -50,14 +49,14 @@ class Home : ScopedFragment() ,KodeinAware{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this,viewModelFactory).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         trigger.setOnClickListener {
-            if(url_input.text.isValidURL()){
+            if (url_input.text.isValidURL()) {
                 trigger.isClickable = false
                 progressBar.appear()
                 shortenUrl(url_input.text.toString())
                 shortenUrlResponse()
-            }else{
+            } else {
                 url_input.error = "Enter a Valid URL!"
             }
         }
@@ -73,7 +72,8 @@ class Home : ScopedFragment() ,KodeinAware{
         alternative_link_result_display.setOnClickListener {
             val clipboard: ClipboardManager? =
                 activity?.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("link", alternative_link_result_display.text.toString())
+            val clip =
+                ClipData.newPlainText("link", alternative_link_result_display.text.toString())
             clipboard?.setPrimaryClip(clip)
             shortToaster("Link Copied to Clipboard!")
         }
@@ -85,15 +85,29 @@ class Home : ScopedFragment() ,KodeinAware{
     }
 
     private fun shortenUrlResponse() = launch {
+        viewModel.networkError.observe(viewLifecycleOwner, Observer {
+            if (!it.isNullOrEmpty()) {
+                if(it == "Unresolved Host" && context?.isConnected() == false){
+                    Snackbar.make(trigger, "Check Your Internet Connectivity", Snackbar.LENGTH_LONG).show()
+                }else{
+                    Snackbar.make(trigger, it, Snackbar.LENGTH_LONG).show()
+                }
+                progressBar.hide()
+                trigger.isClickable = true
+            }
+        })
         viewModel._shortenResponse.observe(viewLifecycleOwner, Observer {
-            Log.d("URL Made", "$it")
-            progressBar.hide()
-            it.result.time = 123
-            upsertItem(it.result)
-            populateUI(it.result)
-            placeholder_image.hide()
-            placeholder_text.hide()
-            result_container.appear()
+            if(it!= null){
+                Log.d("URL Made", "$it")
+                progressBar.hide()
+                it.result.time = 123
+                upsertItem(it.result)
+                populateUI(it.result)
+                trigger.isClickable = true
+                placeholder_image.hide()
+                placeholder_text.hide()
+                result_container.appear()
+            }
         })
     }
 
@@ -101,7 +115,8 @@ class Home : ScopedFragment() ,KodeinAware{
         viewModel.upsertItem(item)
     }
 
-    private fun populateUI(item: ShortnerResult){
+    @SuppressLint("SimpleDateFormat")
+    private fun populateUI(item: ShortnerResult) {
         link_result_display.text = item.fullShortLink
         alternative_link_result_display.text = item.fullShortLink2
         val currentTime: Date = Calendar.getInstance().time

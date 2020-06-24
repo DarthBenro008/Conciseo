@@ -9,5 +9,6 @@ interface ShortenRepository {
     suspend fun upsertItem(item: ShortnerResult)
     suspend fun fetchHistory(): LiveData<List<ShortnerResult>>
     suspend fun deleteHistoryItem(item: ShortnerResult)
+    val networkError : LiveData<String>
     val shortenResponse: LiveData<ShortnerResponse>
 }

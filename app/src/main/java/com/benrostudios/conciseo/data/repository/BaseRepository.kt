@@ -1,29 +1,57 @@
 package com.benrostudios.conciseo.data.repository
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.benrostudios.conciseo.data.models.NetworkResult
 import retrofit2.Response
-import java.io.IOException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+
 
 open class BaseRepository {
+
+    val _networkErrorResolution = MutableLiveData<String>()
+
     suspend fun <T : Any> safeApiCall(call : suspend()-> Response<T>, error : String) :  T?{
         val result = apiOutput(call, error)
         var output : T? = null
         when(result){
             is NetworkResult.Success ->
                 output = result.output
-            is NetworkResult.Error -> Log.e("Error", "The $error and the ${result.exception}")
+            is NetworkResult.Error -> _networkErrorResolution.postValue(result.exception)
         }
         return output
-
     }
-    private suspend fun<T : Any> apiOutput(call: suspend()-> Response<T>, error: String) : NetworkResult<T>{
-        val response = call.invoke()
-        Log.d("Network called",response.toString())
-        return if (response.isSuccessful)
-            NetworkResult.Success(response.body()!!)
-        else
-            NetworkResult.Error(IOException("Something went" +
-                    " wrong due to  $error"))
+
+    private suspend fun<T : Any> apiOutput(call: suspend()-> Response<T>, error: String) : NetworkResult<T> {
+        try{
+            val response = call()
+            Log.d(TAG, "$response")
+            return if (response.isSuccessful) {
+                NetworkResult.Success(response.body()!!)
+            } else {
+                NetworkResult.Error(
+                    "Server Down"
+                )
+            }
+        } catch (e: UnknownHostException) {
+            Log.e(TAG, "$e")
+            return  NetworkResult.Error(
+                "Unresolved Host"
+            )
+        } catch (e: SocketTimeoutException) {
+            Log.e(TAG, "$e")
+            return NetworkResult.Error(
+                "Socket Timeout"
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "$e")
+            return NetworkResult.Error(
+                "Something went wrong due to $e"
+            )
+        }
+    }
+    companion object{
+        const val TAG = "BaseRepo"
     }
 }
