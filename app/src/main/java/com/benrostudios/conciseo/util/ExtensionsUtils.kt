@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.benrostudios.conciseo.R
+import com.google.android.material.snackbar.Snackbar
 
 
 fun Fragment.shortToaster(message: String) {
@@ -35,5 +37,13 @@ fun Context.isConnected(): Boolean {
     val activeNetworkInfo = connectivityManager!!.activeNetworkInfo
     return activeNetworkInfo != null && activeNetworkInfo.isConnected
 }
+
+fun View.errorSnackbar(error: String){
+    val snackbar = Snackbar.make(this , error,Snackbar.LENGTH_LONG)
+    val snackView = snackbar.view
+    snackView.setBackgroundColor(resources.getColor(R.color.snackRed))
+    snackbar.show()
+}
+
 
 fun CharSequence?.isValidURL() = !isNullOrEmpty() && Patterns.WEB_URL.matcher(this ?: "").matches()

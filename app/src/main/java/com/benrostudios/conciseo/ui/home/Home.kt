@@ -1,11 +1,12 @@
 package com.benrostudios.conciseo.ui.home
 
-import android.R.attr.label
 import android.annotation.SuppressLint
 import android.content.ClipData
+import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,6 +33,7 @@ class Home : ScopedFragment(), KodeinAware {
 
     override val kodein by closestKodein()
     private val viewModelFactory: HomeViewModelFactory by instance()
+    private var pasteData: String = ""
 
 
     companion object {
@@ -78,7 +80,10 @@ class Home : ScopedFragment(), KodeinAware {
             shortToaster("Link Copied to Clipboard!")
         }
 
+        clipChecker()
+
     }
+
 
     private fun shortenUrl(url: String) = launch {
         viewModel.shortenUrl(url)
@@ -87,17 +92,17 @@ class Home : ScopedFragment(), KodeinAware {
     private fun shortenUrlResponse() = launch {
         viewModel.networkError.observe(viewLifecycleOwner, Observer {
             if (!it.isNullOrEmpty()) {
-                if(it == "Unresolved Host" && context?.isConnected() == false){
-                    Snackbar.make(trigger, "Check Your Internet Connectivity", Snackbar.LENGTH_LONG).show()
-                }else{
-                    Snackbar.make(trigger, it, Snackbar.LENGTH_LONG).show()
+                if (it == "Unresolved Host" && context?.isConnected() == false) {
+                    trigger.errorSnackbar("Check Your Internet Connectivity!")
+                } else {
+                    trigger.errorSnackbar(it)
                 }
                 progressBar.hide()
                 trigger.isClickable = true
             }
         })
         viewModel._shortenResponse.observe(viewLifecycleOwner, Observer {
-            if(it!= null){
+            if (it != null) {
                 Log.d("URL Made", "$it")
                 progressBar.hide()
                 it.result.time = 123
@@ -122,6 +127,40 @@ class Home : ScopedFragment(), KodeinAware {
         val currentTime: Date = Calendar.getInstance().time
         val sdf = SimpleDateFormat("hh:mm ")
         time_generation_display.text = "Link Generated Time : ${sdf.format(currentTime)}"
+    }
+
+    private fun clipChecker() {
+        var clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        var clipText = when {
+            !clipboard.hasPrimaryClip() -> {
+                false
+            }
+            !(clipboard.primaryClipDescription?.hasMimeType(MIMETYPE_TEXT_PLAIN))!! -> {
+                // This disables the paste menu item, since the clipboard has data but it is not plain text
+                false
+            }
+            else -> {
+                // This enables the paste menu item, since the clipboard contains plain text.
+                true
+            }
+        }
+        if(clipText){
+            var snackbar = Snackbar.make(trigger,"Paste recently copied website",Snackbar.LENGTH_LONG)
+            snackbar.setAction("Paste") {
+                fetchFromClipboard()
+                if(pasteData.isNotEmpty())
+                    url_input.setText(pasteData)
+            }
+            snackbar.show()
+        }
+    }
+
+    private fun fetchFromClipboard(){
+        var clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val item = clipboard.primaryClip?.getItemAt(0)
+        pasteData = item?.text.toString()
+        Log.d("Home","$pasteData")
+
     }
 
 }

@@ -13,4 +13,5 @@
     <color name="colorSecondaryText">#6d6d6d</color>
     <color name="colorDarkCardText">#f3f3f3</color>
     <color name="black">#171717</color>
+    <color name="snackRed">#e53935</color>
 </resources>

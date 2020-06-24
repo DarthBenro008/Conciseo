@@ -20,6 +20,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/suggestion_container"
+        android:layout_width="0dp"
+        app:cardCornerRadius="16dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/cardview_dark_background"
+        app:layout_constraintEnd_toEndOf="@+id/input_container"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/input_container"
+        app:layout_constraintTop_toTopOf="@+id/guideline2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/input_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -53,6 +71,8 @@
                     android:id="@+id/url_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     tools:layout_editor_absoluteX="-16dp"
                     tools:layout_editor_absoluteY="355dp" />
 
@@ -84,12 +104,12 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ProgressBar
-                android:visibility="invisible"
-                android:indeterminate="true"
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/url_input_holder"
                 app:layout_constraintStart_toStartOf="@+id/url_input_holder"
                 app:layout_constraintTop_toBottomOf="@+id/url_input_holder" />
@@ -97,7 +117,6 @@
     </androidx.cardview.widget.CardView>
 
     <ImageView
-        tools:visibility="gone"
         android:id="@+id/placeholder_image"
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -105,10 +124,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_container" />
+        app:layout_constraintTop_toBottomOf="@+id/input_container"
+        tools:visibility="gone" />
 
     <TextView
-        tools:visibility="gone"
         android:id="@+id/placeholder_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -118,18 +137,19 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/placeholder_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="gone" />
 
     <androidx.cardview.widget.CardView
-        android:visibility="gone"
         android:id="@+id/result_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        app:cardCornerRadius="10dp"
         android:elevation="10dp"
+        android:visibility="gone"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_container">
@@ -223,6 +243,13 @@
                 app:layout_constraintTop_toTopOf="@+id/textView6" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.34" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
